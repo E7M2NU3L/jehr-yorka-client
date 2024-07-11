@@ -1,8 +1,13 @@
+import FaQ from '@/components/pricing/faq'
+import Prices from '@/components/pricing/price'
 import React from 'react'
 
 const Pricing = () => {
   return (
-    <div>Pricing</div>
+    <div className='min-h-[90vh]'>
+      <Prices />
+      <FaQ />
+    </div>
   )
 }
 

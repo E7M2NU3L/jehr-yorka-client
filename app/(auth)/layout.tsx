@@ -3,7 +3,7 @@ import React from 'react'
 
 const Auth = ({children} : {children : React.ReactNode}) => {
   return (
-    <div>
+    <div className='bg-dark-black'>
         <Navbar />
         {children}
     </div>

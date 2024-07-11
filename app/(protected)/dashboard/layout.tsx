@@ -4,9 +4,9 @@ import React from 'react'
 
 const Dash = ({children} : {children : React.ReactNode} ) => {
   return (
-    <div className='flex min-h-screen bg-gradient-to-tr from-dark-black via-dark-black/80 to-subtle-black'>
+    <div className='flex min-h-screen bg-gradient-to-tr from-dark-black to-subtle-black'>
         <Sidebar />
-        <section className='flex flex-col w-[90%] min-h-screen'>
+        <section className='flex flex-col w-[90%] md:w-[95%] min-h-screen'>
             <Dashnav />
             {children}
         </section>
