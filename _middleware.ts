@@ -6,6 +6,7 @@ import NextAuth from "next-auth"
 const { auth } = NextAuth(authConfig)
 import {default_login_redirect, default_loggedin_redirect,  apiAuthPrefix, authRoutes, publicRoutes} from '@/routes' 
 
+/*
 export default auth((req) => {
     const isLoggedin = !!req.auth;
     console.log(isLoggedin);
@@ -35,3 +36,4 @@ export default auth((req) => {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 }
+*/
