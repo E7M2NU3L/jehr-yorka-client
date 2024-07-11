@@ -122,7 +122,7 @@ const SignIn = () => {
           </Button>
 
           <p className="sign-up-label">
-          Don't have an account?<span className="sign-up-link"><Link href={"/sign-up"}>
+          Dont have an account?<span className="sign-up-link"><Link href={"/sign-up"}>
           Sign up
           </Link></span>
         </p>

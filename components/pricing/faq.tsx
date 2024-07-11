@@ -42,7 +42,7 @@ export default function FaQ() {
                   fontFamily: "Anta, sans-serif"
                 }}>
                   <p>
-                    Yes, you can cancel your subscription at any time. We don't lock you into long-term contracts. If
+                    Yes, you can cancel your subscription at any time. We dont lock you into long-term contracts. If
                     you cancel, your subscription will continue until the end of the current billing period.
                   </p>
                 </div>
@@ -68,7 +68,7 @@ export default function FaQ() {
           <div className="mt-12 grid gap-8">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Future Updates</h2>
-            <p className="text-dark-white/80 md:text-xl/relaxed">Check out what's coming soon.</p>
+            <p className="text-dark-white/80 md:text-xl/relaxed">Check out whats coming soon.</p>
           </div>
           <div className="grid gap-4">
             <div className="grid gap-2">

@@ -98,7 +98,7 @@ const Blogs = () => {
               </h1>
 
               <h1 className='text-lg font-medium text-dark-white/80 pt-3'>
-                We sat down with London's fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
+                We sat down with Londons fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
               </h1>
 
               <main className='w-full justify-between pe-[1rem] flex items-center'>
@@ -150,7 +150,7 @@ const Blogs = () => {
                       whiteSpace: 'nowrap',
                       textOverflow: 'ellipsis'
                     }}>
-                      We sat down with London's fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
+                      We sat down with Londons fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
                     </h1>
 
                     <main className='w-full justify-between flex items-center'>
@@ -200,7 +200,7 @@ const Blogs = () => {
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis'
                       }}>
-                        We sat down with London's fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
+                        We sat down with Londons fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
                       </h1>
 
                       <main className='w-full justify-between flex items-center'>
@@ -250,7 +250,7 @@ const Blogs = () => {
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis'
                       }}>
-                        We sat down with London's fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
+                        We sat down with Londons fast growing brand and product design studio, Makr & Co. to find out the research and studies based on the Psychology of the HRs
                       </h1>
 
                       <main className='w-full justify-between flex items-center'>

@@ -39,7 +39,7 @@ export default function About() {
                     fontFamily: "Lato, sans-serif"
                 }}>
                   <CheckIcon className="w-4 h-4 text-subtle-green" />
-                  Customer-Centricity: Our clients' success is at the heart of everything we do.
+                  Customer-Centricity: Our clients success is at the heart of everything we do.
                 </li>
                 <li className="flex items-center gap-2" style={{
                     fontFamily: "Lato, sans-serif"
