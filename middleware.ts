@@ -8,6 +8,7 @@ import {default_login_redirect, default_loggedin_redirect,  apiAuthPrefix, authR
 
 export default auth((req) => {
     const isLoggedin = !!req.auth;
+    console.log(isLoggedin);
     const {nextUrl} = req;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);

@@ -4,6 +4,7 @@ export const publicRoutes = [
     '/how-to-use',
     '/products',
     '/pricing',
+    '/dashboard'
 ];
 
 export const authRoutes = [
@@ -15,4 +16,4 @@ export const apiAuthPrefix = 'api/auth'
 
 export const default_login_redirect = '/sign-up';
 
-export const default_loggedin_redirect = '/dashboard';
+export const default_loggedin_redirect = '/';
