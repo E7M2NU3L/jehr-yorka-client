@@ -1,3 +1,4 @@
+import { LogoutUser } from "@/actions/logout";
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,9 +11,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from "@/components/ui/use-toast";
 
-export function Logout() {
-    const handleLogout = () => {}
+interface LogoutProps {
+  logoutFn : () => void;
+}
+
+export function Logout({logoutFn} : LogoutProps) {
     const handleClose = () => {}
   return (
     <Dialog>
@@ -44,7 +49,7 @@ export function Logout() {
         </div>
         <DialogFooter className="flex w-full justify-between items-center px-3">
           <Button type="submit" variant={"secondary"} onClick={handleClose}>Cancel</Button>
-          <Button type="submit" variant={"destructive"} onClick={handleLogout}>Logout</Button>
+          <Button type="submit" variant={"destructive"} onClick={logoutFn}>Logout</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -13,38 +13,39 @@ type DashLink = {
   id: keyof typeof DashProxy;
   Icon: JSX.Element;
   label: string;
+  link: string;
 };
 
 const DashLinks: DashLink[] = [
   {
     id: 'dashboard',
     Icon: <LayoutDashboard />,
-    label: 'Dashboard'
+    label: 'Dashboard',
+    link: '/dashboard'
   },
   {
     id: 'whiteboard',
     Icon: <CircuitBoard />,
-    label: 'Whiteboard'
+    label: 'Whiteboard',
+    link: '/room'
   },
   {
     id: 'chat',
     Icon: <MessageCircle />,
-    label: 'Chat'
-  },
-  {
-    id: 'videoCall',
-    Icon: <VideoIcon />,
-    label: 'Video Call'
+    label: 'Chat',
+    link: '/dashboard/chat'
   },
   {
     id: 'tasks',
     Icon: <Timer />,
-    label: 'Tasks'
+    label: 'Tasks',
+    link: '/dashboard/tasks'
   },
   {
     id: 'Mailer',
     Icon: <Mail />,
-    label: 'Mailer'
+    label: 'Mailer',
+    link: '/dashboard/mailer'
   }
 ];
 
@@ -52,12 +53,14 @@ const SideFoot: DashLink[] = [
   {
     id: 'settings',
     Icon: <Settings />,
-    label: 'Settings'
+    label: 'Settings',
+    link: '/dashboard/settings'
   },
   {
     id: 'help',
     Icon: <HelpCircle />,
-    label: 'Help'
+    label: 'Help',
+    link: '/dashboard/help'
   }
 ];
 
@@ -94,21 +97,21 @@ const Sidebar: React.FC = () => {
 
       <ul className='w-full flex flex-col items-center pt-[1rem]'>
         {DashLinks.map((content) => (
-          <li key={content.id}>
+          <Link href={content.link} key={content.id}>
             <Button variant="ghost" onClick={() => handleClick(content.id)}>
               {content.Icon}
             </Button>
-          </li>
+          </Link>
         ))}
       </ul>
 
       <ul className='absolute bottom-0 w-full flex flex-col items-center pt-[1rem]'>
         {SideFoot.map((content) => (
-          <li key={content.id}>
+          <Link href={content.link} key={content.id}>
             <Button variant="ghost" onClick={() => handleClick(content.id)}>
               {content.Icon}
             </Button>
-          </li>
+          </Link>
         ))}
       </ul>
     </div>

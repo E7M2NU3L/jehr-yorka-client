@@ -2,16 +2,60 @@
 
 import DashProxy from '@/proxy/dash';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel } from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
 import { MdNotificationImportant } from 'react-icons/md';
 import { Notify } from '@/utils/notifications/notify';
+import { GetUser } from '@/actions/get-user';
+import { toast } from '../ui/use-toast';
+
+interface UserDataProps {
+  email: string | null | undefined;
+  image: string | null | undefined;
+  name: string | null | undefined;
+}
 
 const Dashnav: React.FC = () => {
   const snap = useSnapshot(DashProxy);
   console.log(snap);
+
+  const [userData, setUserData] = useState<UserDataProps | null>(null);
+
+  const getUserClient = async () => {
+    try {
+      const promise = await GetUser();
+      if (promise?.user) {
+        setUserData({
+          email: promise.user.email || '',
+          image: promise.user.image || '',
+          name: promise.user.name || ''
+        });
+      }
+      
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: error.name,
+          description: error.message
+        })
+      }
+      else {
+        toast({
+          variant: 'destructive',
+          title: 'Unknown Error',
+          description: 'Internal Server Error'
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    getUserClient();
+  }, []);
+
 
   const conditionalRender = () => {
     if (snap.Mailer) {
@@ -93,7 +137,7 @@ const Dashnav: React.FC = () => {
 
         <section className='relative cursor-pointer'>
               <Link href={"/profile"}>
-                <img src="/profile.png" alt='profile-pic' className='object-contain w-[34px] h-[34px] rounded-full border-dark-green border relative' />
+                <img src={userData?.image || "https://github.com/shadcn.png"} alt='profile-pic' className='object-contain w-[34px] h-[34px] rounded-full border-dark-green border relative' />
                 <div className='absolute w-[6px] h-[6px] rounded-full bg-dark-green inset-1'></div>
               </Link>
         </section>

@@ -1,42 +1,43 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-// Emums
-enum Role {
-  Admin
-  User
-  Supervisor
+generator client {
+  provider = "prisma-client-js"
 }
 
-enum Gender {
-  Male
-  Female
-  Other
-}
-
-// Model Schemas
 model User {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  firstName          String?
-  lastName String?
-  email         String?         @unique
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  password String?
+  password      String    @default("")
+
   accounts      Account[]
-  role Role @default(User)
-  gender Gender @default(Other)
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  sessions      Session[]
+
+  teamIDs       String[]  @db.ObjectId
+  teams         Team[]    @relation("TeamMembers", references: [id], fields: [teamIDs])
+
+  sentChats     Chat[]    @relation("SentChats")
+  receivedChats Chat[]    @relation("ReceivedChats")
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  projects      Project[] @relation("ProjectMembers", fields: [projectIds], references: [id])
+  projectIds    String[] @db.ObjectId
+  
+  tasks         Task[]    @relation("UserTasks")
+
+  comments      Comment[]
+
+  @@map("users")
+  Team Team[] @relation("TeamLeader")
 }
- 
+
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
@@ -50,13 +51,166 @@ model Account {
   scope             String?
   id_token          String? @db.String
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
+
+  @@map("accounts")
 }
 
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+
+  @@map("verification_token")
+}
+
+model Chat {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+
+  sender     User    @relation("SentChats", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId   String  @db.ObjectId
+
+  receiver   User    @relation("ReceivedChats", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId String  @db.ObjectId
+
+  teamId     String? @db.ObjectId
+  team       Team?   @relation("TeamChats", fields: [teamId], references: [id], onDelete: Cascade)
+
+  message    String  @default("")
+  image      String  @default("")
+
+  createdAt  DateTime @default(now())
+
+  @@map("chats")
+}
+
+model Team {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+
+  leaderID    String   @db.ObjectId
+  leader      User     @relation("TeamLeader", fields: [leaderID], references: [id])
+
+  members     User[]   @relation("TeamMembers", fields: [memberId], references: [id])
+  memberId    String[] @db.ObjectId
+
+  projects    Project[] @relation("TeamProjects")
+  chats       Chat[]   @relation("TeamChats")
+
+  isActive    Boolean  @default(true)
+  logo        String?  // URL to the team logo image
+  location    String?  // Optional field for team location (e.g., city, country)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("teams")
+}
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  name        String   // Name of the project
+  description String?  // Optional description of the project
+
+  teamId      String   @db.ObjectId
+  team        Team     @relation("TeamProjects", fields: [teamId], references: [id])  // Relation to the Team model
+
+  members     User[]   @relation("ProjectMembers", fields: [memberId], references: [id])
+  memberId    String[] @db.ObjectId
+
+  startDate   DateTime // Start date of the project
+  endDate     DateTime? // Optional end date of the project
+
+  status      String   // Project status, e.g., "ongoing", "completed", "planned"
+  progress    Float    @default(0.0)  // Progress as a percentage (0.0 to 100.0)
+
+  tasks       Task[]   @relation("ProjectTasks")
+
+  budget      Float?   // Optional budget allocated to the project
+  client      String?  // Optional client name or ID associated with the project
+  isArchived  Boolean  @default(false) // Flag to indicate if the project is archived
+
+  createdAt   DateTime @default(now())  // Timestamp for when the project was created
+  updatedAt   DateTime @updatedAt       // Timestamp for when the project was last updated
+
+  @@map("projects")
+}
+
+model Task {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  title       String   // Task title or name
+  description String?  // Optional task description
+
+  projectId   String   @db.ObjectId
+  project     Project  @relation("ProjectTasks", fields: [projectId], references: [id], onDelete: Cascade)  // Relation to the Project model
+
+  userId      String?  @db.ObjectId
+  assignedTo  User?    @relation("UserTasks", fields: [userId], references: [id], onDelete: SetNull)  // Relation to the User model
+  
+  status      String   // Task status, e.g., "to do", "in progress", "done"
+  priority    String   // Priority of the task, e.g., "low", "medium", "high"
+  dueDate     DateTime? // Optional due date for the task
+
+  comments    Comment[] @relation("TaskComments") 
+  subtasks    Subtask[] @relation("TaskSubtasks")
+
+  createdAt   DateTime @default(now())  // Timestamp for when the task was created
+  updatedAt   DateTime @updatedAt       // Timestamp for when the task was last updated
+
+  @@map("tasks")
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String   // The content of the comment
+  taskId    String   @db.ObjectId
+  task      Task     @relation("TaskComments", fields: [taskId], references: [id], onDelete: Cascade)  // Relation to the Task model
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)  // Relation to the User model
+  createdAt DateTime @default(now())  // Timestamp for when the comment was created
+  updatedAt DateTime @updatedAt       // Timestamp for when the comment was last updated
+
+  @@map("comments")
+}
+
+model Subtask {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   // Subtask title or name
+  description String?  // Optional subtask description
+
+  taskId      String   @db.ObjectId
+  task        Task     @relation("TaskSubtasks", fields: [taskId], references: [id], onDelete: Cascade)  // Relation to the Task model
+
+  status      String   // Subtask status, e.g., "to do", "in progress", "done"
+  dueDate     DateTime? // Optional due date for the subtask
+
+  createdAt   DateTime @default(now())  // Timestamp for when the subtask was created
+  updatedAt   DateTime @updatedAt       // Timestamp for when the subtask was last updated
+
+  @@map("subtasks")
+}

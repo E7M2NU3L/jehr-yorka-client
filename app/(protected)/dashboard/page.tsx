@@ -1,7 +1,6 @@
 "use client"
 
 import Chat from '@/components/dash/chat';
-import Conference from '@/components/dash/conference';
 import Dash from '@/components/dash/dash';
 import Help from '@/components/dash/help';
 import Mailer from '@/components/dash/mailer';
@@ -20,7 +19,6 @@ const Dashboard: React.FC = () => {
       {dashsnap.dashboard && <Dash />}
       {dashsnap.whiteboard && <WhiteBoard />}
       {dashsnap.chat && <Chat />}
-      {dashsnap.videoCall && <Conference />}
       {dashsnap.tasks && <Tasks />}
       {dashsnap.Mailer && <Mailer />}
       {dashsnap.settings && <Settings />}

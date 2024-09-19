@@ -1,35 +1,32 @@
 import Image from 'next/image'
 import React from 'react'
-import HeroImg from '../../public/hero/hero1.png'
-import Hero2 from '../../public/hero/hero (2).png'
-import Hero3 from '../../public/hero/hero (3).png'
 import { Button } from '../ui/button'
 
 const Hero = () => {
   return (
-    <div className='min-h-[90vh] w-full flex justify-center items-center flex-col md:flex-row'>
-      <section className='w-[50%] relative'>
-        <Image src={Hero2} alt='' width={450} height={400} className='absolute top-[-20vh] left-[-20vh]' />
-        <Image src={HeroImg} alt='' width={400} height={400} className='relative' />
-        <Image src={Hero3} alt='' width={300} height={300} className='absolute bottom-[-20vh] right-[20vh]' />      
-      </section>
-
-      <section className='w-[50%] relative md:px-[3rem] px-[1rem]'>
-        <h1 className="text-5xl font-bold mb-6" style={{ fontFamily: "Oswald, sans-serif" }}>
-          Elevate Your <span className='text-subtle-red ps-2'>Workplace</span> Productivity with <span className='px-2 text-dark-green'>Quizero</span>
-        </h1>
-        <p className="text-xl mb-6" style={{ fontFamily: "Anta, sans-serif" }}>
-          Experience seamless collaboration, efficient task management, and real-time communication with our all-in-one workplace productivity platform. Empower your team to achieve more together.
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <Button>
-            Get Started
-          </Button>
-          <Button variant='secondary'>
-            Learn More
-          </Button>
+    <div className="relative w-full h-[90vh] my-40 md:my-0 flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: `url(/hero/hero (2).png)` }}>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-[80%] mx-auto">
+        <div className="md:w-[50%] text-center md:text-left">
+          <h1 className="text-6xl font-bold text-white mb-6" style={{ fontFamily: "Oswald, sans-serif" }}>
+            Revolutionize Your <span className="text-subtle-red">Team's Workflow</span>
+          </h1>
+          <p className="text-xl text-white mb-6" style={{ fontFamily: "Anta, sans-serif" }}>
+            Unleash your team's potential with our comprehensive platform. From task tracking to live collaboration and performance analytics, we’ve got it all at an unbeatable price.
+          </p>
+          <div className="flex justify-center md:justify-start gap-4">
+            <Button>
+              Get Started
+            </Button>
+            <Button variant="secondary" className=" text-dark-green">
+              Learn More
+            </Button>
+          </div>
         </div>
-      </section>
+        <div className="md:w-[50%] mt-8 md:mt-0 flex justify-center">
+          <Image src={"/hero/hero1.png"} alt="Hero Image" width={450} height={450} />
+        </div>
+      </div>
     </div>
   )
 }

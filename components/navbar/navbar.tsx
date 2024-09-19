@@ -1,11 +1,16 @@
-"use client"
+"use client";
 
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import { NavDrawer } from '@/utils/navbar/navdrawer'
 import { Logout } from '@/utils/navbar/logout'
+import { toast } from '../ui/use-toast'
+import { GetUser } from '@/actions/get-user'
+import { LogoutUser } from '@/actions/logout';
+import { UserImage } from './userbutton';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const navElements = [
   {
@@ -29,9 +34,73 @@ const navElements = [
   links: '/how-to-use'
 }]
 
+interface UserDataProps {
+  email: string | null | undefined;
+  image: string | null | undefined;
+  name: string | null | undefined;
+}
+
+
 const Navbar = () => {
 
-  const [loggedin, setLoggedin] = useState(false);
+  const [loggedin, setLoggedin] = useState<Boolean>(false);
+  const [userData, setUserData] = useState<UserDataProps | null>(null);
+
+  const getUserClient = async () => {
+    try {
+      const promise = await GetUser();
+      if (promise?.user) {
+        setUserData({
+          email: promise.user.email || '',
+          image: promise.user.image || '',
+          name: promise.user.name || ''
+        });
+        setLoggedin(true);
+      }
+      
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: error.name,
+          description: error.message
+        })
+      }
+      else {
+        toast({
+          variant: 'destructive',
+          title: 'Unknown Error',
+          description: 'Internal Server Error'
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    getUserClient();
+  }, [])
+
+  const LogoutClient = async () => {
+    try {
+      await LogoutUser();
+      setLoggedin(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: error.name,
+          description: error.message
+        })
+      }
+      else {
+        toast({
+          variant: 'destructive',
+          title: 'Unknown Error',
+          description: 'Internal Server Error'
+        })
+      }
+    }
+  }
 
   return (
     <div className='min-h-[10vh] flex justify-between items-center w-full px-[1.2rem]'>
@@ -90,6 +159,11 @@ const Navbar = () => {
           <>
              <section className='flex justify-around items-center space-x-4'>
               <section className='flex space-x-6 items-start'>
+              <Avatar>
+                <AvatarImage src={userData?.image || 
+              ""} alt="@shadcn" />
+                <AvatarFallback>{userData?.name}</AvatarFallback>
+              </Avatar>
               <Button variant="outline" className='text-md font-light' style={{
                 fontFamily: "Anta, sans-serif"
               }}>
@@ -98,7 +172,7 @@ const Navbar = () => {
                 </Link>
               </Button>
               
-                <Logout />
+                <Logout logoutFn={LogoutClient} />
               </section>
             </section>
           </>

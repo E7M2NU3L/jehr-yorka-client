@@ -15,6 +15,7 @@ import { FormError } from '@/components/auth/form-error'
 import { FormSuccess } from '@/components/auth/form-success'
 import { useRouter } from 'next/navigation'
 import { register } from '@/actions/register'
+import AuthWrapper from '@/components/auth/auth-wrapper'
 
 const SignUp = () => {
   const router = useRouter();
@@ -58,13 +59,9 @@ const SignUp = () => {
   }
   
   return (
-    <div className='min-h-[90vh] flex justify-center items-center text-dark-white' style={{
-      fontFamily: "Oswald, sans-serif"
-    }}>
-      <Form {...form}>
-        <form className="form-signup hover:shadow-2xl hover:shadow-subtle-gold transition-all duration-300 ease-in-out" onSubmit={form.handleSubmit(onSubmit)}>
-          <p className="title">Register </p>
-          <p className="message">Signup now and get full access to our app. </p>        
+    <AuthWrapper message={'Connect with Workprod'} submessage='Signup now and get full access to our app.'>
+       <Form {...form}>
+        <form className="form-signup" onSubmit={form.handleSubmit(onSubmit)}>     
             <div className="flex">
               <FormField
                 control={form.control}
@@ -148,28 +145,9 @@ const SignUp = () => {
             </>
           </Button>
           <p className="signin">Already have an acount ? <Link href="/sign-in">Signin</Link> </p>
-
-          <section className='flex justify-between items-center relative overflow-hidden px-2'>
-            <Separator className='w-[40%]' />
-            <h1 className='text-dark-white'>
-              Or
-            </h1>
-            <Separator className='w-[40%]' />
-          </section>
-
-          <div className="buttons-container">
-          <Button variant={"secondary"} className="apple-login-button text-xl">
-            <FaGithub />
-            <span>Sign up with Github</span>
-          </Button>
-          <Button variant={"outline"} className="google-login-button text-xl">
-            <FaGoogle />
-            <span >Sign up with Google</span>
-          </Button>
-        </div>
       </form>
       </Form>
-    </div>
+    </AuthWrapper>
   )
 }
 

@@ -22,7 +22,7 @@ export const register = async (values : z.infer <typeof SignupSchema>) => {
 
     const {email, password, firstName, lastName, confirmPassword} : Destructured = validatedData.data;
     // checking if Email already exists
-    const EmailFound = await GetuserByEmail(email);
+    const EmailFound = await GetuserByEmail(email, password);
 
     if (EmailFound) {
         return {error: "Email already exists, Try with a different one!"};
@@ -37,8 +37,7 @@ export const register = async (values : z.infer <typeof SignupSchema>) => {
         data: {
             email,
             password: hashedPassword,
-            firstName,
-            lastName
+            name: `${firstName} ${lastName}`
         }
     });
     

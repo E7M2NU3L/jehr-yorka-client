@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useTransition } from 'react'
-import {FaGoogle, FaGithub} from 'react-icons/fa'
 import './main.css'
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { FormError } from '@/components/auth/form-error';
 import { FormSuccess } from '@/components/auth/form-success';
 import { login } from '@/actions/login';
-import { signIn } from '@/auth';
+import AuthWrapper from '@/components/auth/auth-wrapper';
 
 const SignIn = () => {
   const [isPending, setIsPending] = useTransition();
@@ -40,7 +39,7 @@ const SignIn = () => {
       })
 
       setTimeout(() => {
-        router.push('/');
+        router.push('/dashboard');
       }, 3000);
     } catch (error) {
       if (error instanceof Error) {
@@ -52,33 +51,11 @@ const SignIn = () => {
     }
   }
 
-  const handleGoogle = async() => {
-    try {
-      await signIn();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const handleGithub = async() => {
-    try {
-      await signIn();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
-    <div className='min-h-[90vh] flex justify-center items-center text-dark-white' style={{
-      fontFamily: "Oswald, sans-serif"
-    }}>
-       <div className="signin-form-container text-dark-white bg-[#1a1a1a] outline-dark-white rounded-2xl hover:shadow-2xl hover:shadow-dark-gold transition-all duration-300 ease-in-out">
-      <p className="text-3xl font-bold pt-3 pb-[2rem] text-dark-white" style={{
-        fontFamily: "Anta, sans-serif"
-      }}>Welcome back</p>
-      <Form
+    <AuthWrapper message='Welcome back' submessage={'subcribe to get frequent updates on the app'}> 
+        <Form
       {...form}>
-        <form className="form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="signin-form flex flex-col gap-y-4 mt-6" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             name='email'
             control={form.control}
@@ -126,20 +103,9 @@ const SignIn = () => {
           Sign up
           </Link></span>
         </p>
-        <div className="buttons-container">
-          <Button variant={"secondary"} className="apple-login-button text-xl" onClick={handleGithub}>
-            <FaGithub />
-            <span>Log in with Github</span>
-          </Button>
-          <Button variant={"outline"} className="google-login-button text-xl" onClick={handleGoogle}>
-            <FaGoogle />
-            <span >Log in with Google</span>
-          </Button>
-        </div>
         </form>
       </Form>
-    </div>
-    </div>
+    </AuthWrapper>
   )
 }
 
